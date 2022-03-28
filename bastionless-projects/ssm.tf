@@ -20,6 +20,9 @@ runtimeConfig:
           - sudo systemctl enable httpd 
           - sudo systemctl status amazon-ssm-agent
           - sudo systemctl enable amazon-ssm-agent
+          - cd /var/www/html/
+          - sudo mkdir images 
+          - sudo mkdir css
           - sudo aws s3 cp s3://mybkctlist/index.html > /var/www/html/index.html
           - sudo aws s3 cp s3://mybkctlist/cloud-computing.png > /var/www/html/images/cloud-computing.png
           - sudo aws s3 cp s3://mybkctlist/styles.css > /var/www/html/css/styles.css
