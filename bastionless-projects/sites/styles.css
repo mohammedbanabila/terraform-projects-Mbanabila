@@ -1,0 +1,21 @@
+body{
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: aliceblue;
+}
+
+.list-header{
+    font-size: 100%;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 900;
+    font-style: normal;
+    text-decoration: none;
+    text-transform: uppercase ;
+    color: rgb(14, 106, 218);
+    padding-left: 30%;
+}
+
+.list-img {
+    padding-left: 30%;
+}
