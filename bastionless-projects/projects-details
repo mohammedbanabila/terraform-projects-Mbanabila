@@ -1,0 +1,7 @@
+ deploy  2 tier design   for  webserver in public subnet and database in private 
+ deploy  database mutl-az and  read replica  in private subnet  
+ deploy s3 bucket to store objects and copy  it  to instances 
+ using   aws ssm  for connect  session  in each ec2 instance  and run command that be in script in aws ssm document
+ asscociate  ec2 instance with aws ssm  and  activation   for registering ec2 instance 
+ using   iam role  to minimum permission policy for aws ssm   
+ create  gateway endpoint  for instance to  reach out to s3 bucket by using  iam role  to minimum  permission policy
