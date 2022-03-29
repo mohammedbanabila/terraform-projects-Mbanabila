@@ -11,7 +11,8 @@ resource "aws_lb" "lbrole" {
   }
 
 }
-resource "aws_lb_listener" "lisnter" {
+
+resource "aws_lb_listener" "alblisnter" {
   load_balancer_arn = aws_lb.lbrole.arn
   port              = var.ports[1]
   protocol          = "HTTP"
@@ -23,11 +24,9 @@ resource "aws_lb_listener" "lisnter" {
     target_group_arn = aws_lb_target_group.targetrole.arn
     type             = "forward"
   }
-
-
 }
 resource "aws_lb_listener_rule" "rule1" {
-  listener_arn = aws_lb_listener.lisnter.arn
+  listener_arn = aws_lb_listener.alblisnter.arn
   condition {
     http_request_method {
       values = ["GET", "HEAD"]
@@ -41,6 +40,7 @@ resource "aws_lb_listener_rule" "rule1" {
   lifecycle {
     create_before_destroy = true
   }
+
 
 }
 
@@ -58,8 +58,8 @@ resource "aws_lb_target_group" "targetrole" {
     protocol            = "HTTP"
     path                = "/"
     interval            = 6
-    healthy_threshold   = 6
-    unhealthy_threshold = 6
-    timeout             = 6
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
+    timeout             = 3
   }
 }
