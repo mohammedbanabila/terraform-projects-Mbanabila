@@ -27,9 +27,9 @@ runtimeConfig:
           - sudo chmod 777 /var/www/html/css
           - sudo chmod 777 /var/www/html/images/cloud-computing.png
           - sudo chmod 777 /var/www/html/css/styles.css
-          - sudo aws s3 cp s3://mybkctlist/index.html > /var/www/html/index.html
-          - sudo aws s3 cp s3://mybkctlist/cloud-computing.png > /var/www/html/images/cloud-computing.png
-          - sudo aws s3 cp s3://mybkctlist/styles.css > /var/www/html/css/styles.css
+          - sudo aws s3 cp s3://mybkctlist/index.html > /var/www/html/
+          - sudo aws s3 cp s3://mybkctlist/cloud-computing.png > /var/www/html/images/
+          - sudo aws s3 cp s3://mybkctlist/styles.css > /var/www/html/css/
 
 DOC
 }
