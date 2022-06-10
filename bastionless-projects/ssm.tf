@@ -16,6 +16,7 @@ runtimeConfig:
           - sudo yum update -y 
           - sudo yum upgrade -y
           - sudo yum install httpd -y 
+          - sudo yum install -y https://s3.region.amazonaws.com/amazon-ssm-region/latest/linux_amd64/amazon-ssm-agent.rpm
           - sudo systemctl start httpd 
           - sudo systemctl enable httpd 
           - sudo systemctl status amazon-ssm-agent
