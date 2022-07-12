@@ -7,7 +7,7 @@ resource "aws_cloudformation_stack" "mystack" {
 
   iam_role_arn = aws_iam_role.cfrole.arn
  
-  template_url = "s3://bcktslist.us-east-1.amazonaws.com/*"
+  template_url = "s3://bcktslist.us-east-1.amazonaws.com/cflab.yml"
   
 }
 
@@ -51,6 +51,6 @@ resource "aws_s3_bucket_versioning" "bukctvers" {
 }
 resource "aws_s3_object" "file1" {
   key    = "cflab.yml"
-  bucket = aws_s3_bucket.cfbckts.bucket
+  bucket = aws_s3_bucket.bckts.bucket
   source = "./cflab.yml"
 }

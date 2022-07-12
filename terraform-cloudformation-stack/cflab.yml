@@ -1017,12 +1017,10 @@ myAutoscalingGroup:
 
 # for mysql
 
-
-
     dbase:
       Type: AWS::RDS::DBInstance
       Properties:
-        AllocatedStorage: "String"
+        AllocatedStorage: 20
         AllowMajorVersionUpgrade: false
         AutoMinorVersionUpgrade: false
         BackupRetentionPeriod: 7
@@ -1032,16 +1030,44 @@ myAutoscalingGroup:
         DeleteAutomatedBackups: true
         DeletionProtection: false
         Engine: mysql
-        EngineVersion: "5.8"
+        EngineVersion: "5.7"
         MasterUserPassword: Bs4809559
         MasterUsername: dbeast1
         MultiAZ: true
+        PreferredBackupWindow: 09:00-10:50
+        PreferredMaintenanceWindow: Fri:11:00-Fri:12:00
         Port: 3306
         StorageEncrypted: false
         StorageType: gp2
         VPCSecurityGroups: !REF secgroup2
 
 
+        # for  db  read replica
+        myreplicas:
+          Type: AWS::RDS::DBInstance
+          Properties:
+            AllocatedStorage:  20
+            AllowMajorVersionUpgrade: false
+            AutoMinorVersionUpgrade: false
+            AvailabilityZone: 
+             - us-east-1a
+             - us-east-1b
+             - us-east-1c
+            DBInstanceClass: db.t3.micro # Required
+            DBSubnetGroupName: !REF dbsbntsgrp
+            DeleteAutomatedBackups: true
+            DeletionProtection: false
+            Engine: mysql
+            EngineVersion: "5.7"
+            MultiAZ: false
+            Port: 3306
+            PubliclyAccessible: false
+            SourceDBInstanceIdentifier: !GetAtt  dbase.mydbrole
+            StorageEncrypted: false
+            StorageType: gp2
+            VPCSecurityGroups: !REF secgroup2
+              
+   
 dbsbntsgrp:
   Type: AWS::RDS::DBSubnetGroup
   Properties:
