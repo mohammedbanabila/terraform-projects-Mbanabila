@@ -19,14 +19,14 @@ intgw:
 AttachGateway:
   Type: AWS::EC2::VPCGatewayAttachment
   Properties:
-    VpcId: !REF MyVPC
-    InternetGatewayId: !Ref intgw
+    VpcId: !Ref  myvpc
+    InternetGatewayId: !Ref  intgw
 
 subnets1:
   Type: AWS::EC2::Subnet
   Properties:
     AvailabilityZone: us-east-1a
-    VpcId: !REF myvpc
+    VpcId: !Ref  myvpc
     CidrBlock: 88.30.100.0/24
     MapPublicIpOnLaunch: true
     Tags:
@@ -36,7 +36,7 @@ subnets2:
   Type: AWS::EC2::Subnet
   Properties:
     AvailabilityZone: us-east-1b
-    VpcId: !REF myvpc
+    VpcId: !Ref  myvpc
     CidrBlock: 88.30.101.0/24
     MapPublicIpOnLaunch: true
     Tags:
@@ -47,7 +47,7 @@ subnets3:
   Type: AWS::EC2::Subnet
   Properties:
     AvailabilityZone: us-east-1c
-    VpcId: !REF myvpc
+    VpcId: !Ref  myvpc
     CidrBlock: 88.30.102.0/24
     MapPublicIpOnLaunch: true
 
@@ -61,7 +61,7 @@ subnets10:
   Type: AWS::EC2::Subnet
   Properties:
     AvailabilityZone: us-east-1a
-    VpcId: !REF myvpc
+    VpcId: !Ref  myvpc
     CidrBlock: 88.30.10.0/24
     Tags:
       - Key: Name
@@ -70,7 +70,7 @@ subnets20:
   Type: AWS::EC2::Subnet
   Properties:
     AvailabilityZone: us-east-1b
-    VpcId: !REF myvpc
+    VpcId: !Ref  myvpc
     CidrBlock: 88.30.11.0/24
     Tags:
       - Key: Name
@@ -80,7 +80,7 @@ subnets30:
   Type: AWS::EC2::Subnet
   Properties:
     AvailabilityZone: us-east-1c
-    VpcId: !REF myvpc
+    VpcId: !Ref  myvpc
     CidrBlock: 88.30.12.0/24
     Tags:
       - Key: Name
@@ -101,25 +101,25 @@ route1:
   Type: AWS::EC2::Route
   Properties:
     DestinationCidrBlock: "0.0.0.0/0"
-    GatewayId: !REF intgw
-    RouteTableId: !REF routetable1
+    GatewayId: !Ref  intgw
+    RouteTableId: !Ref  routetable1
 
 
 associate1:
   Type: AWS::EC2::SubnetRouteTableAssociation
   Properties:
-    SubnetId: !REF subnets1
-    RouteTableId: !REF routetable1
+    SubnetId: !Ref  subnets1
+    RouteTableId: !Ref  routetable1
 associate2:
   Type: AWS::EC2::SubnetRouteTableAssociation
   Properties:
-    SubnetId: !REF subnets2
-    RouteTableId: !REF routetable1
+    SubnetId: !Ref  subnets2
+    RouteTableId: !Ref  routetable1
 associate3:
   Type: AWS::EC2::SubnetRouteTableAssociation
   Properties:
-    SubnetId: !REF subnets3
-    RouteTableId: !REF routetable1
+    SubnetId: !Ref  subnets3
+    RouteTableId: !Ref  routetable1
 
 
 Eips1:
@@ -130,7 +130,7 @@ Eips1:
     Tags:
       Tags
     
-Eips1:
+Eips2:
   Type: AWS::EC2::EIP
   Properties:
     Domain: "vpc"
@@ -150,9 +150,9 @@ Eips3:
 natgw1a:
   Type: AWS::EC2::NatGateway
   Properties:
-    AllocationId: !REF Eips1
+    AllocationId: !Ref  Eips1
     ConnectivityType: "public"
-    SubnetId: !REF subnets1
+    SubnetId: !Ref  subnets1
     Tags:
       - Key: Name
         Value: nat-1a
@@ -161,9 +161,9 @@ natgw1a:
 natgw1b:
   Type: AWS::EC2::NatGateway
   Properties:
-    AllocationId: !REF Eips2
+    AllocationId: !Ref  Eips2
     ConnectivityType: "public"
-    SubnetId: !REF subnets2
+    SubnetId: !Ref  subnets2
     Tags:
       - Key: Name
         Value: nat-1b
@@ -172,9 +172,9 @@ natgw1b:
 natgw1c:
   Type: AWS::EC2::NatGateway
   Properties:
-    AllocationId: !REF Eips3
+    AllocationId: !Ref  Eips3
     ConnectivityType: "public"
-    SubnetId: !REF subnets3
+    SubnetId: !Ref  subnets3
     Tags:
       - Key: Name
         Value: nat-1c
@@ -186,22 +186,22 @@ natgw1c:
     Type: AWS::EC2::Route
     Properties:
       DestinationCidrBlock: "0.0.0.0/0"
-      NatGatewayId: !Ref  natgw1a
-      RouteTableId: !REF routetable2
+      NatGatewayId: !Ref   natgw1a
+      RouteTableId: !Ref  routetable2
 
   route21:
     Type: AWS::EC2::Route
     Properties:
       DestinationCidrBlock: "0.0.0.0/0"
-      NatGatewayId: !Ref  natgw1b
-      RouteTableId: !REF routetable2
+      NatGatewayId: !Ref   natgw1b
+      RouteTableId: !Ref  routetable2
 
   route22:
     Type: AWS::EC2::Route
     Properties:
       DestinationCidrBlock: "0.0.0.0/0"
-      NatGatewayId: !Ref  natgw1c
-      RouteTableId: !REF routetable2
+      NatGatewayId: !Ref   natgw1c
+      RouteTableId: !Ref  routetable2
 
 
   
@@ -211,25 +211,25 @@ natgw1c:
       Tags:
       - Key: Name
         Value: table2
-      VpcId: !REF myvpc
+      VpcId: !Ref  myvpc
 
   associate10:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      RouteTableId: !Ref routetable2 
-      SubnetId: !REF subnets10 
+      RouteTableId: !Ref  routetable2 
+      SubnetId: !Ref  subnets10 
 
   associate20:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      RouteTableId: !Ref routetable2 
-      SubnetId: !REF subnets20 
+      RouteTableId: !Ref  routetable2 
+      SubnetId: !Ref  subnets20 
 
   associate30:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      RouteTableId: !Ref routetable2 
-      SubnetId: !REF subnets30 
+      RouteTableId: !Ref  routetable2 
+      SubnetId: !Ref  subnets30 
 
   # for  security group  webserver
 
@@ -238,14 +238,14 @@ secgroup1:
   Properties:
     GroupName: secure1
     GroupDescription: 
-    VpcId: !Ref  myvpc
+    VpcId: !Ref   myvpc
     SecurityGroupIngress:
-      - !REF ingress1
-      - !REF ingress2
-      - !REF ingress3
-      - !REF ingress4
+      - !Ref  ingress1
+      - !Ref  ingress2
+      - !Ref  ingress3
+      - !Ref  ingress4
     SecurityGroupEgress:
-      - !REF egress1
+      - !Ref  egress1
     Tags:
       - Key: Name
         Value: public-secure-1
@@ -254,33 +254,33 @@ ingress1:
   Properties:
     CidrIp: 41.79.199.26/32
     FromPort: 22
-    GroupName: !REF secgroup1
+    GroupName: !Ref  secgroup1
     IpProtocol: tcp
     ToPort: 65535
 ingress2:
   Type: AWS::EC2::SecurityGroupIngress
   Properties:
-    SourceSecurityGroupName:  !REF secgroup3
+    SourceSecurityGroupName: !Ref  secgroup3
     FromPort: 80
-    GroupName: !REF secgroup1
+    GroupName: !Ref  secgroup1
     IpProtocol: tcp
     ToPort: 65535
 
 ingress3:
   Type: AWS::EC2::SecurityGroupIngress
   Properties:
-    SourceSecurityGroupName:  !REF secgroup3
+    SourceSecurityGroupName:  !Ref  secgroup3
     FromPort: 443
-    GroupName: !REF secgroup1
+    GroupName: !Ref  secgroup1
     IpProtocol: tcp
     ToPort: 65535
 
 ingress4:
   Type: AWS::EC2::SecurityGroupIngress
   Properties:
-    SourceSecurityGroupName:  !REF secgroup2
+    SourceSecurityGroupName:  !Ref  secgroup2
     FromPort: 3306
-    GroupName: !REF secgroup1
+    GroupName: !Ref  secgroup1
     IpProtocol: tcp
     ToPort: 65535
 
@@ -289,7 +289,7 @@ egress1:
   Properties:
     CidrIp: 0.0.0.0/0
     FromPort: 0
-    GroupId: !REF secgroup1
+    GroupId: !Ref  secgroup1
     IpProtocol: -1
     ToPort: 0
 
@@ -304,14 +304,14 @@ secgroup2:
   Properties:
     GroupName: secure2
     GroupDescription: 
-    VpcId: !Ref  myvpc
+    VpcId: !Ref   myvpc
     SecurityGroupIngress:
-      - !REF ingress10
-      - !REF ingress20
-      - !REF ingress30
-      - !REF ingress40
+      - !Ref  ingress10
+      - !Ref  ingress20
+      - !Ref  ingress30
+      - !Ref  ingress40
     SecurityGroupEgress:
-      - !REF egress2
+      - !Ref  egress2
     Tags:
       - Key: Name
         Value: public-secure-2
@@ -319,9 +319,9 @@ secgroup2:
 ingress10:
   Type: AWS::EC2::SecurityGroupIngress
   Properties:
-    SourceSecurityGroupId: !REF secgroup1
+    SourceSecurityGroupId: !Ref  secgroup1
     FromPort: 22
-    GroupName: !REF secgroup2
+    GroupName: !Ref  secgroup2
     IpProtocol: tcp
     ToPort: 65535
   
@@ -330,7 +330,7 @@ ingress20:
   Properties:
     CidrIp: 0.0.0.0/0
     FromPort: 80
-    GroupName: !REF secgroup2
+    GroupName: !Ref  secgroup2
     IpProtocol: tcp
     ToPort: 65535
 
@@ -339,16 +339,16 @@ ingress30:
   Properties:
     CidrIp: 0.0.0.0/0
     FromPort: 443
-    GroupName: !REF secgroup2
+    GroupName: !Ref  secgroup2
     IpProtocol: tcp
     ToPort: 65535
 
 ingress40:
   Type: AWS::EC2::SecurityGroupIngress
   Properties:
-    SourceSecurityGroupId: !REF secgroup1
+    SourceSecurityGroupId: !Ref  secgroup1
     FromPort: 3306
-    GroupName: !REF secgroup2
+    GroupName: !Ref  secgroup2
     IpProtocol: tcp
     ToPort: 65535
 
@@ -357,7 +357,7 @@ egress2:
   Properties:
     CidrIp: 0.0.0.0/0
     FromPort: 0
-    GroupId: !REF secgroup2
+    GroupId: !Ref  secgroup2
     IpProtocol: -1
     ToPort: 0
 
@@ -372,12 +372,12 @@ secgroup3:
   Properties:
     GroupName: secure3
     GroupDescription: 
-    VpcId: !Ref  myvpc
+    VpcId: !Ref   myvpc
     SecurityGroupIngress:
-      - !REF ingress21
-      - !REF ingress31
+      - !Ref  ingress21
+      - !Ref  ingress31
     SecurityGroupEgress:
-      - !REF egress3
+      - !Ref  egress3
     Tags:
       - Key: Name
         Value: public-secure-3
@@ -388,7 +388,7 @@ ingress21:
   Properties:
     CidrIp: 0.0.0.0/0
     FromPort: 80
-    GroupName: !REF secgroup3
+    GroupName: !Ref  secgroup3
     IpProtocol: tcp
     ToPort: 65535
 
@@ -397,7 +397,7 @@ ingress31:
   Properties:
     CidrIp: 0.0.0.0/0
     FromPort: 443
-    GroupName: !REF secgroup3
+    GroupName: !Ref  secgroup3
     IpProtocol: tcp
     ToPort: 65535
 
@@ -407,7 +407,7 @@ egress3:
   Properties:
     CidrIp: 0.0.0.0/0
     FromPort: 0
-    GroupId: !REF secgroup3
+    GroupId: !Ref  secgroup3
     IpProtocol: -1
     ToPort: 0
 
@@ -419,11 +419,11 @@ loadbalancer-east1:
     IpAddressType: ipv4
     Name: "estlb"
     Scheme: internet-facing
-    SecurityGroups: !REF secure3
+    SecurityGroups: !Ref  secure3
     Subnets:
-      - !REF subnets10
-      - !REF subnets20
-      - !REF subnets30
+      - !Ref  subnets10
+      - !Ref  subnets20
+      - !Ref  subnets30
     Type: application
 
 
@@ -432,7 +432,7 @@ lisntr-lb:
   Properties:
 
     DefaultActions: forward
-    LoadBalancerArn: !REF  loadbalancer-east1
+    LoadBalancerArn: !Ref   loadbalancer-east1
     Port: 80
     Protocol: HTTP
 
@@ -446,7 +446,7 @@ listnr-rule:
         - HEAD  
         - GET
           
-    ListenerArn: !REF  lisntr-lb
+    ListenerArn: !Ref   lisntr-lb
   Priority: 1
 
 
@@ -467,7 +467,7 @@ targetslinks:
     Protocol: HTTP
     TargetType: instance
     UnhealthyThresholdCount: 3
-    VpcId: !REF myvpc
+    VpcId: !Ref  myvpc
 
 
 
@@ -479,23 +479,23 @@ nacl10:
     Tags:
       - Key: Name
         Value: public-nacls
-    VpcId: !REF myvpc
+    VpcId: !Ref  myvpc
 
 nacl-associate1:
   Type: AWS::EC2::SubnetNetworkAclAssociation
   Properties:
-    NetworkAclId: !REF nacl10
-    SubnetId: !REF subnets1
+    NetworkAclId: !Ref  nacl10
+    SubnetId: !Ref  subnets1
 nacl-associate2:
   Type: AWS::EC2::SubnetNetworkAclAssociation
   Properties:
-    NetworkAclId: !REF nacl10
-    SubnetId: !REF subnets2
+    NetworkAclId: !Ref  nacl10
+    SubnetId: !Ref  subnets2
 nacl-associate3:
   Type: AWS::EC2::SubnetNetworkAclAssociation
   Properties:
-    NetworkAclId: !REF nacl10
-    SubnetId: !REF subnets3
+    NetworkAclId: !Ref  nacl10
+    SubnetId: !Ref  subnets3
 nacl-entry1:
   Type: AWS::EC2::NetworkAclEntry
   Properties:
@@ -504,7 +504,7 @@ nacl-entry1:
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl10
+    NetworkAclId: !Ref  nacl10
     PortRange:
       From: 22
       To:  65535
@@ -519,7 +519,7 @@ nacl-entry2:
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl10
+    NetworkAclId: !Ref  nacl10
     PortRange:
       From: 80
       To: 65535
@@ -534,7 +534,7 @@ nacl-entry3:
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl10
+    NetworkAclId: !Ref  nacl10
     PortRange:
       From: 443
       To: 65535
@@ -550,7 +550,7 @@ nacl-entry4:
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl10
+    NetworkAclId: !Ref  nacl10
     PortRange:
       From: 3306
       To: 65535
@@ -566,7 +566,7 @@ nacl-entry10:
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl10
+    NetworkAclId: !Ref  nacl10
     PortRange:
       From: 22
       To: 65535
@@ -582,7 +582,7 @@ nacl-entry11:
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl10
+    NetworkAclId: !Ref  nacl10
     PortRange:
       From: 80
       To: 65535
@@ -598,12 +598,12 @@ nacl-entry12:
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl10
+    NetworkAclId: !Ref  nacl10
     PortRange:
       From: 443
       To: 65535
     Protocol: 443 # Required
-     RuleAction: allow # Required
+    RuleAction: allow # Required
     RuleNumber: 70  # Required
 
 nacl-entry13:
@@ -614,12 +614,12 @@ nacl-entry13:
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl10
+    NetworkAclId: !Ref  nacl10
     PortRange:
       From: 3306
       To: 65535
     Protocol: 3306 # Required
-     RuleAction: allow # Required
+    RuleAction: allow # Required
     RuleNumber: 80 # Required
 
 
@@ -634,7 +634,7 @@ nacl-entry20:
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl10
+    NetworkAclId: !Ref  nacl10
     PortRange:
       From: 22
       To: 65535
@@ -651,12 +651,12 @@ nacl-entry21:
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl10
+    NetworkAclId: !Ref  nacl10
     PortRange:
       From: 80
       To: 65535
     Protocol: 80 # Required
-     RuleAction: allow # Required
+    RuleAction: allow # Required
     RuleNumber: 100 # Required
 
 
@@ -668,12 +668,12 @@ nacl-entry22:
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl10
+    NetworkAclId: !Ref  nacl10
     PortRange:
       From: 443
       To: 65535
     Protocol: 443 # Required
-     RuleAction: allow # Required
+    RuleAction: allow # Required
     RuleNumber: 110 # Required
 
 
@@ -685,12 +685,12 @@ nacl-entry23:
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl10
+    NetworkAclId: !Ref  nacl10
     PortRange:
       From: 3306
       To: 65535
     Protocol: 3306  # Required
-     RuleAction: allow # Required
+    RuleAction: allow # Required
     RuleNumber: 120 # Required
 
 nacl-entry30:
@@ -701,7 +701,7 @@ nacl-entry30:
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl10
+    NetworkAclId: !Ref  nacl10
     PortRange:
       From: 0
       To: 0
@@ -713,71 +713,68 @@ nacl-entry30:
 
 # for  nacl in  private  subnets
 
-
-
-
 nacl20:
   Type: AWS::EC2::NetworkAcl
   Properties:
     Tags:
       - Key: Name
         Value: private-nacls
-    VpcId: !REF myvpc
+    VpcId: !Ref  myvpc
 
 nacl-associate10:
   Type: AWS::EC2::SubnetNetworkAclAssociation
   Properties:
-    NetworkAclId: !REF nacl20
-    SubnetId: !REF subnets10
+    NetworkAclId: !Ref  nacl20
+    SubnetId: !Ref  subnets10
 nacl-associate20:
   Type: AWS::EC2::SubnetNetworkAclAssociation
   Properties:
-    NetworkAclId: !REF nacl20
-    SubnetId: !REF subnets20
+    NetworkAclId: !Ref  nacl20
+    SubnetId: !Ref  subnets20
 nacl-associate30:
   Type: AWS::EC2::SubnetNetworkAclAssociation
   Properties:
-    NetworkAclId: !REF nacl20
-    SubnetId: !REF subnets30
-nacl-entry1:
-  Type: AWS::EC2::NetworkAclEntry
-  Properties:
+    NetworkAclId: !Ref  nacl20
+    SubnetId: !Ref  subnets30
+  nacl-entry1:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
     CidrBlock: !GetAtt subnets10.CidrBlock
     Egress: false
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl20
+    NetworkAclId: !Ref  nacl20
     PortRange:
       From: 22
       To:  65535
     Protocol: 22 # Required
     RuleAction: allow # Required
     RuleNumber: 10 # Required
-nacl-entry2:
-  Type: AWS::EC2::NetworkAclEntry
-  Properties:
+  nacl-entry2:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
     CidrBlock: !GetAtt subnets10.CidrBlock
     Egress: false
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl20
+    NetworkAclId: !Ref  nacl20
     PortRange:
       From: 80
       To: 65535
     Protocol: 80 # Required
     RuleAction: allow # Required
     RuleNumber:  20 # Required
-nacl-entry3:
-  Type: AWS::EC2::NetworkAclEntry
-  Properties:
+  nacl-entry3:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
     CidrBlock: !GetAtt subnets10.CidrBlock
     Egress: false
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl20
+    NetworkAclId: !Ref  nacl20
     PortRange:
       From: 443
       To: 65535
@@ -785,15 +782,15 @@ nacl-entry3:
     RuleAction:  allow # Required
     RuleNumber: 30 # Required
 
-nacl-entry4:
-  Type: AWS::EC2::NetworkAclEntry
-  Properties:
+  nacl-entry4:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
     CidrBlock: !GetAtt subnets10.CidrBlock
     Egress: false
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl20
+    NetworkAclId: !Ref  nacl20
     PortRange:
       From: 3306
       To: 65535
@@ -801,15 +798,15 @@ nacl-entry4:
     RuleAction: allow # Required
     RuleNumber: 40 # Required
 
-nacl-entry10:
-  Type: AWS::EC2::NetworkAclEntry
-  Properties:
+  nacl-entry10:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
     CidrBlock: !GetAtt subnets20.CidrBlock
     Egress: false
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl20
+    NetworkAclId: !Ref  nacl20
     PortRange:
       From: 22
       To: 65535
@@ -817,15 +814,15 @@ nacl-entry10:
     RuleAction: allow # Required
     RuleNumber: 50 # Required
 
-nacl-entry11:
-  Type: AWS::EC2::NetworkAclEntry
-  Properties:
+  nacl-entry11:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
     CidrBlock: !GetAtt subnets20.CidrBlock
     Egress: false
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl20
+    NetworkAclId: !Ref  nacl20
     PortRange:
       From: 80
       To: 65535
@@ -833,51 +830,51 @@ nacl-entry11:
     RuleAction: allow # Required
     RuleNumber: 60 # Required
 
-nacl-entry12:
-  Type: AWS::EC2::NetworkAclEntry
-  Properties:
+  nacl-entry12:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
     CidrBlock: !GetAtt subnets20.CidrBlock
     Egress: false
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl20
+    NetworkAclId: !Ref  nacl20
     PortRange:
       From: 443
       To: 65535
     Protocol: 443 # Required
-     RuleAction: allow # Required
+    RuleAction: allow # Required
     RuleNumber: 70  # Required
 
-nacl-entry13:
-  Type: AWS::EC2::NetworkAclEntry
-  Properties:
+  nacl-entry13:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
     CidrBlock: !GetAtt subnets20.CidrBlock
     Egress: false
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl20
+    NetworkAclId: !Ref  nacl20
     PortRange:
       From: 3306
       To: 65535
     Protocol: 3306 # Required
-     RuleAction: allow # Required
+    RuleAction: allow # Required
     RuleNumber: 80 # Required
 
 
 
 
 
-nacl-entry20:
-  Type: AWS::EC2::NetworkAclEntry
-  Properties:
+  nacl-entry20:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
     CidrBlock: !GetAtt subnets30.CidrBlock
     Egress: false
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl20
+    NetworkAclId: !Ref  nacl20
     PortRange:
       From: 22
       To: 65535
@@ -886,65 +883,65 @@ nacl-entry20:
     RuleNumber: 90 # Required
 
 
-nacl-entry21:
-  Type: AWS::EC2::NetworkAclEntry
-  Properties:
+  nacl-entry21:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
     CidrBlock: !GetAtt subnets30.CidrBlock
     Egress: false
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl20
+    NetworkAclId: !Ref  nacl20
     PortRange:
       From: 80
       To: 65535
     Protocol: 80 # Required
-     RuleAction: allow # Required
+    RuleAction: allow # Required
     RuleNumber: 100 # Required
 
 
-nacl-entry22:
-  Type: AWS::EC2::NetworkAclEntry
-  Properties:
+  nacl-entry22:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
     CidrBlock: !GetAtt subnets30.CidrBlock
     Egress: false
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl20
+    NetworkAclId: !Ref  nacl20
     PortRange:
       From: 443
       To: 65535
     Protocol: 443 # Required
-     RuleAction: allow # Required
+    RuleAction: allow # Required
     RuleNumber: 110 # Required
 
 
-nacl-entry23:
-  Type: AWS::EC2::NetworkAclEntry
-  Properties:
+  nacl-entry23:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
     CidrBlock: !GetAtt subnets30.CidrBlock
     Egress: false
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl20
+    NetworkAclId: !Ref  nacl20
     PortRange:
       From: 3306
       To: 65535
     Protocol: 3306  # Required
-     RuleAction: allow # Required
+    RuleAction: allow # Required
     RuleNumber: 120 # Required
 
-nacl-entry30:
-  Type: AWS::EC2::NetworkAclEntry
-  Properties:
+  nacl-entry30:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
     CidrBlock: 0.0.0.0/0
     Egress: true
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !REF nacl10
+    NetworkAclId: !Ref  nacl10
     PortRange:
       From: 0
       To: 0
@@ -961,7 +958,7 @@ mytemp:
   Type: AWS::EC2::LaunchTemplate
   Properties:
     LaunchTemplateData:
-      InstanceProfileName: !Ref myprofilies 
+      InstanceProfileName: !Ref  myprofilies 
       BlockDeviceMappings:
         - Ebs:
               VolumeSize: 8
@@ -973,8 +970,7 @@ mytemp:
       ImageId: ami-0cff7528ff583bf9a
       InstanceType: t2.micrp
       KeyName:  keys1role
-      SecurityGroupIds:
-        - !REF secgroup1
+      SecurityGroupIds: !Ref  secgroup1
       UserData: 
         Fn::Base64:
           !Sub |
@@ -999,7 +995,7 @@ myAutoscalingGroup:
     HealthCheckGracePeriod: 300        
     HealthCheckType: ELB
     LaunchTemplate:
-      LaunchTemplateId: !REF mytemp
+      LaunchTemplateId: !Ref  mytemp
       Version: !GetAtt mytemp.LatestVersionNumber
     MaxSize: "9" # Required
     MinSize: "1" # Required
@@ -1009,7 +1005,7 @@ myAutoscalingGroup:
         - subnets2
         - subnets3
 
-    LoadBalancerNames: !REF loadbalancer-east1
+    LoadBalancerNames: !Ref  loadbalancer-east1
     TargetGroupARNs: !GetAtt loadbalancer-east1.targetslinks
 
 
@@ -1026,7 +1022,7 @@ myAutoscalingGroup:
         BackupRetentionPeriod: 7
         DBInstanceClass: db.t3.micro # Required
         DBName: mydbrole
-        DBSubnetGroupName: !REF dbsbntsgrp
+        DBSubnetGroupName: !Ref  dbsbntsgrp
         DeleteAutomatedBackups: true
         DeletionProtection: false
         Engine: mysql
@@ -1039,7 +1035,7 @@ myAutoscalingGroup:
         Port: 3306
         StorageEncrypted: false
         StorageType: gp2
-        VPCSecurityGroups: !REF secgroup2
+        VPCSecurityGroups: !Ref  secgroup2
 
 
         # for  db  read replica
@@ -1054,7 +1050,7 @@ myAutoscalingGroup:
              - us-east-1b
              - us-east-1c
             DBInstanceClass: db.t3.micro # Required
-            DBSubnetGroupName: !REF dbsbntsgrp
+            DBSubnetGroupName: !Ref  dbsbntsgrp
             DeleteAutomatedBackups: true
             DeletionProtection: false
             Engine: mysql
@@ -1065,7 +1061,7 @@ myAutoscalingGroup:
             SourceDBInstanceIdentifier: !GetAtt  dbase.mydbrole
             StorageEncrypted: false
             StorageType: gp2
-            VPCSecurityGroups: !REF secgroup2
+            VPCSecurityGroups: !Ref  secgroup2
               
    
 dbsbntsgrp:
@@ -1124,7 +1120,7 @@ myasmlinks:
     AssociationName: east1ssmlinks
     DocumentVersion: !GetAtt myssmrole.VersionName
     Name: ssmtargets # Required
-    Targets: *
+    Targets: "*"
 
 
 # iam  role  for instances to assumerole  in aws ssm system manager 
@@ -1134,7 +1130,7 @@ ssmrole:
   Properties:
     AssumeRolePolicyDocument: 
      Version: "2012-10-17"
-        Statement:
+     Statement:
           - Effect: Allow
             Principal:
               Service:
@@ -1150,4 +1146,4 @@ myprofilies:
   Type: AWS::IAM::InstanceProfile
   Properties:
     InstanceProfileName: profilelinks
-    Roles: !REF ssmrole
+    Roles: !Ref  ssmrole
