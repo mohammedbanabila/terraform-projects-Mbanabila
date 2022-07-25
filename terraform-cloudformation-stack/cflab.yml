@@ -3,57 +3,56 @@ AWSTemplateFormatVersion: 2010-09-09
   
 Resources:
   
-myvpc:
-  Type: AWS::EC2::VPC
-  Properties:
-    CidrBlock: "88.30.00.0/24"
-    Tags:
-      - Key: Name
-        Value: vpc-east-1
-intgw:
-  Type: AWS::EC2::InternetGateway
-  Properties:
-    Tags:
+  myvpc:
+    Type: AWS::EC2::VPC
+    Properties:
+        CidrBlock: "88.30.00.0/24"
+        Tags:
+         - Key: Name
+           Value: vpc-east-1
+  intgw:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+     Tags:
       - Key: Name
         Value: gateway
-AttachGateway:
-  Type: AWS::EC2::VPCGatewayAttachment
-  Properties:
-    VpcId: !Ref  myvpc
-    InternetGatewayId: !Ref  intgw
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref myvpc
+      InternetGatewayId: !Ref intgw
 
-subnets1:
-  Type: AWS::EC2::Subnet
-  Properties:
-    AvailabilityZone: us-east-1a
-    VpcId: !Ref  myvpc
-    CidrBlock: 88.30.100.0/24
-    MapPublicIpOnLaunch: true
-    Tags:
-      - Key: Name
-        Value: public1   
-subnets2:
-  Type: AWS::EC2::Subnet
-  Properties:
-    AvailabilityZone: us-east-1b
-    VpcId: !Ref  myvpc
-    CidrBlock: 88.30.101.0/24
-    MapPublicIpOnLaunch: true
-    Tags:
-      - Key: Name
-        Value: public2
+  subnets1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: us-east-1a
+      VpcId: !Ref myvpc
+      CidrBlock: 88.30.100.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+       - Key: Name
+         Value: public1   
+  subnets2:
+    Type: AWS::EC2::Subnet
+    Properties:
+     AvailabilityZone: us-east-1b
+     VpcId: !Ref myvpc
+     CidrBlock: 88.30.101.0/24
+     MapPublicIpOnLaunch: true
+     Tags:
+       - Key: Name
+         Value: public2
 
-subnets3:
-  Type: AWS::EC2::Subnet
-  Properties:
-    AvailabilityZone: us-east-1c
-    VpcId: !Ref  myvpc
-    CidrBlock: 88.30.102.0/24
-    MapPublicIpOnLaunch: true
-
-    Tags:
-      - Key: Name
-        Value: public3
+  subnets3:
+     Type: AWS::EC2::Subnet
+     Properties:
+     AvailabilityZone: us-east-1c
+     VpcId: !Ref  myvpc
+     CidrBlock: 88.30.102.0/24
+     MapPublicIpOnLaunch: true
+     Tags:
+       - Key: Name
+         Value: public3
 
 
 
@@ -126,86 +125,76 @@ Eips1:
   Type: AWS::EC2::EIP
   Properties:
     Domain: "vpc"
-    InstanceId: "String"
-    Tags:
-      Tags
+    
     
 Eips2:
   Type: AWS::EC2::EIP
   Properties:
     Domain: "vpc"
     InstanceId: "String"
-    Tags:
-      Tags
+  
     
 Eips3:
   Type: AWS::EC2::EIP
   Properties:
     Domain: "vpc"
-    InstanceId: "String"
-    Tags:
-      Tags
+    
     
 
-natgw1a:
-  Type: AWS::EC2::NatGateway
-  Properties:
+  natgw1a:
+    Type: AWS::EC2::NatGateway
+    Properties:
     AllocationId: !Ref  Eips1
-    ConnectivityType: "public"
+    ConnectivityType: public
     SubnetId: !Ref  subnets1
     Tags:
       - Key: Name
         Value: nat-1a
     
 
-natgw1b:
-  Type: AWS::EC2::NatGateway
-  Properties:
+  natgw1b:
+    Type: AWS::EC2::NatGateway
+    Properties:
     AllocationId: !Ref  Eips2
-    ConnectivityType: "public"
+    ConnectivityType: public
     SubnetId: !Ref  subnets2
     Tags:
       - Key: Name
         Value: nat-1b
     
 
-natgw1c:
-  Type: AWS::EC2::NatGateway
-  Properties:
+  natgw1c:
+    Type: AWS::EC2::NatGateway
+    Properties:
     AllocationId: !Ref  Eips3
-    ConnectivityType: "public"
+    ConnectivityType: public
     SubnetId: !Ref  subnets3
     Tags:
       - Key: Name
         Value: nat-1c
-    
 
-
-
-  route20:
-    Type: AWS::EC2::Route
-    Properties:
+route20:
+  Type: AWS::EC2::Route
+  Properties:
       DestinationCidrBlock: "0.0.0.0/0"
       NatGatewayId: !Ref   natgw1a
       RouteTableId: !Ref  routetable2
 
-  route21:
-    Type: AWS::EC2::Route
-    Properties:
+route21:
+  Type: AWS::EC2::Route
+  Properties:
       DestinationCidrBlock: "0.0.0.0/0"
       NatGatewayId: !Ref   natgw1b
       RouteTableId: !Ref  routetable2
 
-  route22:
+route22:
     Type: AWS::EC2::Route
     Properties:
       DestinationCidrBlock: "0.0.0.0/0"
       NatGatewayId: !Ref   natgw1c
       RouteTableId: !Ref  routetable2
 
-
-  
-  routetable2:
+routetable2:
     Type: AWS::EC2::RouteTable
     Properties:
       Tags:
@@ -213,19 +202,19 @@ natgw1c:
         Value: table2
       VpcId: !Ref  myvpc
 
-  associate10:
+associate10:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId: !Ref  routetable2 
       SubnetId: !Ref  subnets10 
 
-  associate20:
+associate20:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId: !Ref  routetable2 
       SubnetId: !Ref  subnets20 
 
-  associate30:
+associate30:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId: !Ref  routetable2 
@@ -249,17 +238,17 @@ secgroup1:
     Tags:
       - Key: Name
         Value: public-secure-1
-ingress1:
-  Type: AWS::EC2::SecurityGroupIngress
-  Properties:
-    CidrIp: 41.79.199.26/32
+  ingress1:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+    CidrIp: 41.79.199.50/32
     FromPort: 22
     GroupName: !Ref  secgroup1
     IpProtocol: tcp
     ToPort: 65535
-ingress2:
-  Type: AWS::EC2::SecurityGroupIngress
-  Properties:
+  ingress2:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
     SourceSecurityGroupName: !Ref  secgroup3
     FromPort: 80
     GroupName: !Ref  secgroup1
@@ -267,8 +256,8 @@ ingress2:
     ToPort: 65535
 
 ingress3:
-  Type: AWS::EC2::SecurityGroupIngress
-  Properties:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
     SourceSecurityGroupName:  !Ref  secgroup3
     FromPort: 443
     GroupName: !Ref  secgroup1
@@ -276,8 +265,8 @@ ingress3:
     ToPort: 65535
 
 ingress4:
-  Type: AWS::EC2::SecurityGroupIngress
-  Properties:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
     SourceSecurityGroupName:  !Ref  secgroup2
     FromPort: 3306
     GroupName: !Ref  secgroup1
@@ -285,23 +274,19 @@ ingress4:
     ToPort: 65535
 
 egress1:
-  Type: AWS::EC2::SecurityGroupEgress
-  Properties:
+    Type: AWS::EC2::SecurityGroupEgress
+    Properties:
     CidrIp: 0.0.0.0/0
     FromPort: 0
     GroupId: !Ref  secgroup1
     IpProtocol: -1
     ToPort: 0
 
-
-
 # for  security group  mysql
 
-
-
 secgroup2:
-  Type: AWS::EC2::SecurityGroup
-  Properties:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
     GroupName: secure2
     GroupDescription: 
     VpcId: !Ref   myvpc
@@ -315,19 +300,19 @@ secgroup2:
     Tags:
       - Key: Name
         Value: public-secure-2
- 
+
 ingress10:
-  Type: AWS::EC2::SecurityGroupIngress
-  Properties:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
     SourceSecurityGroupId: !Ref  secgroup1
     FromPort: 22
     GroupName: !Ref  secgroup2
     IpProtocol: tcp
     ToPort: 65535
-  
+
 ingress20:
-  Type: AWS::EC2::SecurityGroupIngress
-  Properties:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
     CidrIp: 0.0.0.0/0
     FromPort: 80
     GroupName: !Ref  secgroup2
@@ -335,8 +320,8 @@ ingress20:
     ToPort: 65535
 
 ingress30:
-  Type: AWS::EC2::SecurityGroupIngress
-  Properties:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
     CidrIp: 0.0.0.0/0
     FromPort: 443
     GroupName: !Ref  secgroup2
@@ -360,10 +345,6 @@ egress2:
     GroupId: !Ref  secgroup2
     IpProtocol: -1
     ToPort: 0
-
-
-
-
 
 # for  security group  load balancer 
 
@@ -444,9 +425,8 @@ listnr-rule:
     Conditions: 
      - http-request-method:  
         - HEAD  
-        - GET
-          
-    ListenerArn: !Ref   lisntr-lb
+        - GET       
+    ListenerArn: !Ref lisntr-lb
   Priority: 1
 
 
@@ -467,7 +447,7 @@ targetslinks:
     Protocol: HTTP
     TargetType: instance
     UnhealthyThresholdCount: 3
-    VpcId: !Ref  myvpc
+    VpcId: !Ref myvpc
 
 
 
@@ -701,7 +681,7 @@ nacl-entry30:
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !Ref  nacl10
+    NetworkAclId: !Ref nacl10
     PortRange:
       From: 0
       To: 0
@@ -941,7 +921,7 @@ nacl-associate30:
     Icmp:
       Code: 1
       Type: 1
-    NetworkAclId: !Ref  nacl10
+    NetworkAclId: !Ref  nacl20
     PortRange:
       From: 0
       To: 0
@@ -955,12 +935,12 @@ nacl-associate30:
 
 
 mytemp:
-  Type: AWS::EC2::LaunchTemplate
-  Properties:
-    LaunchTemplateData:
-      InstanceProfileName: !Ref  myprofilies 
-      BlockDeviceMappings:
-        - Ebs:
+      Type: AWS::EC2::LaunchTemplate
+      Properties:
+         LaunchTemplateData:
+         InstanceProfileName: !Ref  myprofilies 
+         BlockDeviceMappings:
+           - Ebs:
               VolumeSize: 8
               VolumeType: gp2
               DeleteOnTermination: false
@@ -971,17 +951,6 @@ mytemp:
       InstanceType: t2.micrp
       KeyName:  keys1role
       SecurityGroupIds: !Ref  secgroup1
-      UserData: 
-        Fn::Base64:
-          !Sub |
-           #!/bin/bash
-             sudo su  
-             yum update -y 
-             yum upgrade -y 
-             yum install httpd -y 
-             systemctl start httpd 
-             systemtl enable httpd 
-             echo "welcome to my site ad its working" ? /var/www/html/index.html
 
 
 
@@ -1035,7 +1004,7 @@ myAutoscalingGroup:
         Port: 3306
         StorageEncrypted: false
         StorageType: gp2
-        VPCSecurityGroups: !Ref  secgroup2
+        VPCSecurityGroups: !Ref secgroup2
 
 
         # for  db  read replica
@@ -1050,7 +1019,7 @@ myAutoscalingGroup:
              - us-east-1b
              - us-east-1c
             DBInstanceClass: db.t3.micro # Required
-            DBSubnetGroupName: !Ref  dbsbntsgrp
+            DBSubnetGroupName: !Ref dbsbntsgrp
             DeleteAutomatedBackups: true
             DeletionProtection: false
             Engine: mysql
@@ -1058,10 +1027,10 @@ myAutoscalingGroup:
             MultiAZ: false
             Port: 3306
             PubliclyAccessible: false
-            SourceDBInstanceIdentifier: !GetAtt  dbase.mydbrole
+            SourceDBInstanceIdentifier: !GetAtt dbase.mydbrole
             StorageEncrypted: false
             StorageType: gp2
-            VPCSecurityGroups: !Ref  secgroup2
+            VPCSecurityGroups: !Ref secgroup2
               
    
 dbsbntsgrp:
@@ -1105,6 +1074,7 @@ myssmrole:
           - "{{ sudo yum install httpd -y }}"
           - "{{ sudo systemtl start httpd }}"
           - "{{ sudo systemctl enable httpd }}"
+          - "{{ sudo echo { welcome to site and its working } > /var/www/html/index.html }}"
 
     DocumentFormat: YAML
     DocumentType: Command
@@ -1142,8 +1112,8 @@ ssmrole:
     RoleName: ssmauth
 
 
-myprofilies:
-  Type: AWS::IAM::InstanceProfile
-  Properties:
-    InstanceProfileName: profilelinks
-    Roles: !Ref  ssmrole
+  myprofilies:
+     Type: AWS::IAM::InstanceProfile
+     Properties:
+     InstanceProfileName: profilelinks
+     Roles: !Ref ssmrole
